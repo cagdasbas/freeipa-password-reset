@@ -1,3 +1,5 @@
+import ssl
+
 import boto3
 import re
 import smtplib
@@ -79,7 +81,7 @@ class Email():
         self.smtp_pass = options['smtp_pass']
         self.smtp_server_addr = options['smtp_server_addr']
         self.smtp_server_port = options['smtp_server_port']
-        self.smtp_server_tls = options['smtp_server_tls']
+        self.smtp_server_security = options['smtp_server_security']
         if ('smtp_from' in options) and (options['smtp_from'] is not None):
             self.smtp_from = options['smtp_from']
         else:
@@ -114,8 +116,13 @@ class Email():
             msg['Subject'] = self.msg_subject
             msg['From'] = self.smtp_from
             msg['To'] = ", ".join(recipients)
-            s = smtplib.SMTP("{0}:{1}".format(self.smtp_server_addr, self.smtp_server_port))
-            if self.smtp_server_tls:
+            if self.smtp_server_security == "ssl":
+                context = ssl.create_default_context()
+                s = smtplib.SMTP_SSL("{0}:{1}".format(self.smtp_server_addr, self.smtp_server_port), context=context)
+            else:
+                s = smtplib.SMTP("{0}:{1}".format(self.smtp_server_addr, self.smtp_server_port))
+
+            if self.smtp_server_security == "tls":
                 s.ehlo()
                 s.starttls(tuple())
                 s.ehlo()

@@ -169,7 +169,7 @@ PROVIDERS = {
             "smtp_pass": "",
             "smtp_server_addr": "",
             "smtp_server_port": 25,
-            "smtp_server_tls": True,
+            "smtp_server_security": "none", # none, ssl, tls
         },
     },
     "signal-1": {
