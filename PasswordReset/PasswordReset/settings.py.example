@@ -161,6 +161,7 @@ PROVIDERS = {
         "display_name": "Email",
         "options": {
             # In template {0} will replaced with token
+            "ldap_attribute_name": "mail",
             "msg_template": "Your reset password token: {0} \nDo not tell anyone this code.",
             "msg_subject": "Your LDAP password reset code",
             "smtp_from": None, #With None its copy value from smtp_user

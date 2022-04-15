@@ -85,6 +85,11 @@ class Email():
         else:
             self.smtp_from = self.smtp_user
 
+        if 'ldap_attribute_name' in options:
+            self.ldap_attribute_name = options['ldap_attribute_name']
+        else:
+            self.ldap_attribute_name = 'mail'
+
     def __filter_emails(self, emails):
         if len(emails) == 0:
             raise EmailValidateFailed("User does not have email addresses")
@@ -101,7 +106,7 @@ class Email():
         return filtered_emails
 
     def send_token(self, user, token):
-        recipients = user['result']['mail']
+        recipients = user['result'][self.ldap_attribute_name]
         recipients = self.__filter_emails(recipients)
 
         try:
